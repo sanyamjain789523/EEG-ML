@@ -6,8 +6,8 @@ from pathlib import Path
 current_dir = Path.cwd()
 
 
-train_folder = current_dir / "src" / "data" / "training_data"
-test_folder = current_dir / "src" / "data" / "test_data"
+train_folder = current_dir / "data" / "training_data"
+test_folder = current_dir / "data" / "test_data"
 
 print("train_folder: ", train_folder)
 app = FastAPI()
