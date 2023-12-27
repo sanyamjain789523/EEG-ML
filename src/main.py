@@ -63,8 +63,7 @@ async def predict(files: list[UploadFile], algorithm: str):
         pred = predict_using_rf(pred_df)
         predictions[file.filename] = pred.item()
     
-    print(predictions)
     return predictions
     
 
-# uvicorn main:app --reload
+# uvicorn src.main:app --reload

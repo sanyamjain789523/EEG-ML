@@ -7,8 +7,10 @@ from src.data_processing.data_processor import session_data_aggregation
 
 current_dir = Path.cwd()
 
-train_folder = current_dir / "src" / "data" / "training_data"
-test_folder = current_dir / "src" /"data" / "test_data"
+# train_folder = current_dir / "src" / "data" / "training_data"
+# test_folder = current_dir / "src" / "data" / "test_data"
+train_folder = current_dir / "data" / "training_data"
+test_folder = current_dir / "data" / "test_data"
 
 
 def prepare_data_for_prediction(csv_file):
