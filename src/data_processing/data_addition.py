@@ -50,6 +50,7 @@ def delete_file(filename, is_train, train_folder, test_folder):
 
 def list_files(is_train, train_folder, test_folder):
     if is_train:
+        print("train_folder::", train_folder)
         return os.listdir(f"{train_folder}")
     else:
         return os.listdir(f"{test_folder}")

@@ -2,12 +2,16 @@ from src.modelling.train import predict_using_rf, train_models
 from src.data_processing.data_addition import add_test_data_to_folder, add_training_data_to_folder, delete_file, list_files, prepare_data_for_prediction
 from fastapi import FastAPI, UploadFile
 from pathlib import Path
+import os
 
-current_dir = Path.cwd()
+current_dir = os.getcwd()
+# print("current_dir: ", current_dir)
+# current_dir = Path.cwd()
+# print("current_dir: ", current_dir)
 
 
-train_folder = current_dir / "data" / "training_data"
-test_folder = current_dir / "data" / "test_data"
+train_folder = current_dir / "src" / "data" / "training_data"
+test_folder = current_dir / "src" / "data" / "test_data"
 
 print("train_folder: ", train_folder)
 app = FastAPI()
