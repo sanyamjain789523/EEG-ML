@@ -44,7 +44,17 @@ def train_models(algorithm):
         y_pred = clf.predict(test_data.drop(["label"], axis = 1))
         # cm = confusion_matrix(training_data["label"], y_pred)
         acc = accuracy_score(training_data["label"], y_pred)
-        return acc
+        # cm = confusion_matrix(training_data["label"], y_pred)
+        tn, fp, fn, tp = confusion_matrix(training_data["label"], y_pred).ravel()
+        # print(tp.item())
+        metrics = {
+            "accurancy":acc,
+            "true_positive": tp.item(),
+            "false_positive": fp.item(),
+            "true_negative": tn.item(),
+            "false_negative": fn.item(),
+        }
+        return metrics
 
 def predict_using_rf(test_file):
     # load the model from disk
