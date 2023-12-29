@@ -225,3 +225,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,windows
+src/__pycache__/main.cpython-311.pyc
+src/modelling/__pycache__/train.cpython-311.pyc
