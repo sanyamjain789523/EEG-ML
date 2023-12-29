@@ -17,7 +17,7 @@ def obtain_data(path):
     files = os.listdir(path)
 
     data = []
-    for file in files[:3]:
+    for file in files:
         if (file.endswith('.csv')) and (file not in ["Dave Wed 18th Oct 2023 7X2 Template with Reports_.csv"]):
             df = pd.read_csv(f"{path}/{file}")
             data.append(df)
@@ -61,37 +61,3 @@ def predict_using_rf(test_file):
     loaded_model = pickle.load(open(f'{modelling}/rf.pkl', 'rb'))
     y_pred = loaded_model.predict(test_file)
     return y_pred
-
-# clf = LogisticRegression(max_iter=1000)
-# # scores = cross_validate(clf, data_train.dropna().drop(["label"], axis = 1), 
-# #                          data_train.dropna()["label"], cv=5, scoring=confusion_matrix_scorer)
-
-# # print("Logistic regression scores: ")
-# # display(scores)
-# # X_train, X_test, y_train, y_test = train_test_split(data_train.dropna().drop(["label"], axis = 1), 
-# #                          data_train.dropna()["label"], test_size = 0.3, random_state = 42)
-# clf.fit(X_train, y_train)
-# y_pred = clf.predict(X_test)
-# cm = confusion_matrix(y_test, y_pred)
-
-# disp = ConfusionMatrixDisplay(confusion_matrix=cm,display_labels=clf.classes_)
-# disp.plot()
-# plt.show()
-    
-
-# clf = RandomForestClassifier()
-# # scores = cross_validate(clf, data_train.dropna().drop(["label"], axis = 1), 
-# #                          data_train.dropna()["label"], cv=5, scoring=confusion_matrix_scorer)
-
-# # print("rf scores: ")
-# # display(scores)
-# # X_train, X_test, y_train, y_test = train_test_split(data_train.dropna().drop(["label"], axis = 1), 
-# #                          data_train.dropna()["label"], test_size = 0.3, random_state = 42)
-# clf.fit(X_train, y_train)
-# y_pred = clf.predict(X_test)
-# cm = confusion_matrix(y_test, y_pred)
-
-# disp = ConfusionMatrixDisplay(confusion_matrix=cm,display_labels=clf.classes_)
-# disp.plot()
-# plt.show()
-
