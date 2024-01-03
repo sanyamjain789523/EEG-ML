@@ -1,4 +1,4 @@
-from src.modelling.train import predict_using_rf, train_models
+from src.modelling.train import predict_file, train_models
 from src.data_processing.data_addition import add_test_data_to_folder, add_training_data_to_folder, delete_file, list_files, prepare_data_for_prediction
 from fastapi import FastAPI, UploadFile
 from pathlib import Path
@@ -84,7 +84,6 @@ async def train_model(algorithm: str):
     try:
         metrics = train_models(algorithm)
         # metrics = jsonable_encoder(metrics)
-        print(metrics)
     except Exception as e:
         return {"Error": str(e)}
     return {"metrics": {algorithm: metrics}}
@@ -96,11 +95,11 @@ async def predict(files: list[UploadFile], algorithm: str):
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
             pred_df = prepare_data_for_prediction(file.file)
-            pred = predict_using_rf(pred_df)
+            pred = predict_file(pred_df, algorithm)
+            
             predictions[file.filename] = pred
     except Exception as e:
         return {f"Error in file: {file.filename}": str(e)}
     return predictions
     
-
 # uvicorn src.main:app --reload

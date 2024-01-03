@@ -1,6 +1,6 @@
 import pandas as pd
 
-def session_data_aggregation(df_dict):
+def session_data_aggregation(df_dict, file_name):
     df_dict_res = {}
     for session_df_key in df_dict.keys():
         session_df = df_dict[session_df_key]

@@ -17,7 +17,7 @@ def prepare_data_for_prediction(csv_file):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df)
+    aggregated_df = session_data_aggregation(df, "pred")
     return aggregated_df
     
 
@@ -25,7 +25,7 @@ def add_training_data_to_folder(csv_file, filename, is_adhd, train_folder):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df)
+    aggregated_df = session_data_aggregation(df, filename)
     data.close()
     aggregated_df["label"] = is_adhd
     aggregated_df.to_csv(f"{train_folder}/{filename}", index=False)
@@ -35,7 +35,7 @@ def add_test_data_to_folder(csv_file, filename, is_adhd, test_folder):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df)
+    aggregated_df = session_data_aggregation(df, filename)
     data.close()
     aggregated_df["label"] = is_adhd
     aggregated_df.to_csv(f"{test_folder}/{filename}", index=False)
