@@ -2,6 +2,13 @@ from src.modelling.train import predict_file, train_models
 from src.data_processing.data_addition import add_test_data_to_folder, add_training_data_to_folder, delete_file, list_files, prepare_data_for_prediction
 from fastapi import FastAPI, UploadFile
 from pathlib import Path
+from src.data_processing import data_processor
+
+agg_dict = {
+    "fb":data_processor.session_data_aggregation,
+    "ratios": data_processor.session_data_aggregation_ratios_df,
+    "bfv": data_processor.session_data_NBRawBFV_df
+}
 
 
 
@@ -40,41 +47,45 @@ def list_file(is_train: bool):
     return {"files": files}
 
 @app.post("/upload_adhd_training_files")
-async def upload_adhd_training_files(files: list[UploadFile]):
+async def upload_adhd_training_files(files: list[UploadFile], method: str):
     try:
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
-            add_training_data_to_folder(file.file, file.filename, 1, train_folder)
+            add_training_data_to_folder(file.file, file.filename, 1, 
+                                        train_folder, agg_dict[method])
     except Exception as e:
         return {f"Error in file: {file.filename}": str(e)}
     return {"filenames": [file.filename for file in files]}
 
 @app.post("/upload_non_adhd_training_files")
-async def upload_non_adhd_training_files(files: list[UploadFile]):
+async def upload_non_adhd_training_files(files: list[UploadFile], method: str):
     try:
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
-            add_training_data_to_folder(file.file, file.filename, 0, train_folder)
+            add_training_data_to_folder(file.file, file.filename, 0, 
+                                        train_folder, agg_dict[method])
     except Exception as e:
         return {f"Error in file: {file.filename}": str(e)}
     return {"filenames": [file.filename for file in files]}
 
 @app.post("/upload_adhd_test_files")
-async def upload_adhd_test_files(files: list[UploadFile]):
+async def upload_adhd_test_files(files: list[UploadFile], method: str):
     try:
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
-            add_test_data_to_folder(file.file, file.filename, 1, test_folder)
+            add_test_data_to_folder(file.file, file.filename, 1, 
+                                    test_folder, agg_dict[method])
     except Exception as e:
         return {f"Error in file: {file.filename}": str(e)}
     return {"filenames": [file.filename for file in files]}
 
 @app.post("/upload_non_adhd_test_files")
-async def upload_non_adhd_test_files(files: list[UploadFile]):
+async def upload_non_adhd_test_files(files: list[UploadFile], method: str):
     try:
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
-            add_test_data_to_folder(file.file, file.filename, 0, test_folder)
+            add_test_data_to_folder(file.file, file.filename, 0, 
+                                    test_folder, agg_dict[method])
     except Exception as e:
         return {f"Error in file: {file.filename}": str(e)}
     return {"filenames": [file.filename for file in files]}
@@ -89,12 +100,12 @@ async def train_model(algorithm: str):
     return {"metrics": {algorithm: metrics}}
  
 @app.post("/predict")
-async def predict(files: list[UploadFile], algorithm: str):
+async def predict(files: list[UploadFile], algorithm: str, method: str):
     predictions = {}
     try:
         for file in files:
             file.filename = file.filename.replace("xlsx", "csv")
-            pred_df = prepare_data_for_prediction(file.file)
+            pred_df = prepare_data_for_prediction(file.file, agg_dict[method])
             pred = predict_file(pred_df, algorithm)
             
             predictions[file.filename] = pred

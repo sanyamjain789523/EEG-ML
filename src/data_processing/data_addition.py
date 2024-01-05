@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from io import BytesIO
 # from src.main import train_folder, test_folder
-from src.data_processing.data_processor import session_data_aggregation
+# from src.data_processing.data_processor import session_data_aggregation
 
 # current_dir = Path.cwd()
 
@@ -13,29 +13,29 @@ from src.data_processing.data_processor import session_data_aggregation
 # test_folder = current_dir / "data" / "test_data"
 
 
-def prepare_data_for_prediction(csv_file):
+def prepare_data_for_prediction(csv_file, agg_func):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df, "pred")
+    aggregated_df = agg_func(df, "pred")
     return aggregated_df
     
 
-def add_training_data_to_folder(csv_file, filename, is_adhd, train_folder):
+def add_training_data_to_folder(csv_file, filename, is_adhd, train_folder, agg_func):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df, filename)
+    aggregated_df = agg_func(df, filename)
     data.close()
     aggregated_df["label"] = is_adhd
     aggregated_df.to_csv(f"{train_folder}/{filename}", index=False)
 
 
-def add_test_data_to_folder(csv_file, filename, is_adhd, test_folder):
+def add_test_data_to_folder(csv_file, filename, is_adhd, test_folder, agg_func):
     contents = csv_file.read()
     data = BytesIO(contents)
     df = pd.read_excel(data, sheet_name=[f"Session {i}" for i in range(1, 8)], index_col=None)
-    aggregated_df = session_data_aggregation(df, filename)
+    aggregated_df = agg_func(df, filename)
     data.close()
     aggregated_df["label"] = is_adhd
     aggregated_df.to_csv(f"{test_folder}/{filename}", index=False)
